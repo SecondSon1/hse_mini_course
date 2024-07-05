@@ -1,5 +1,10 @@
 package hw1
 
+const (
+  HASH_MAP_LOAD_FACTOR = 2
+)
+
+
 type KeyValue[K comparable, V any] struct {
   Key   K
   Value V

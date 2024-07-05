@@ -4,10 +4,6 @@ import (
   "unicode"
 )
 
-const (
-  HASH_MAP_LOAD_FACTOR = 2
-)
-
 func cloneSlice[T any](arr []T) []T {
   new_arr := make([]T, len(arr))
   copy(new_arr, arr)
