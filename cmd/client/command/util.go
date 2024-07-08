@@ -22,14 +22,14 @@ func printAccount(acc *dto.GetAccountResponse) {
 }
 
 func makeRequest(method, url, contentType string,
-                 payload io.Reader) (*http.Response, error) {
-  client := &http.Client{}
+	payload io.Reader) (*http.Response, error) {
+	client := &http.Client{}
 
-  request, err := http.NewRequest(method, url, payload)
-  if err != nil {
-    return nil, err
-  }
-  request.Header.Set("Content-Type", contentType)
+	request, err := http.NewRequest(method, url, payload)
+	if err != nil {
+		return nil, err
+	}
+	request.Header.Set("Content-Type", contentType)
 
-  return client.Do(request)
+	return client.Do(request)
 }

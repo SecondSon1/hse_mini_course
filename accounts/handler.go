@@ -1,11 +1,11 @@
 package accounts
 
 import (
+	"fmt"
 	"hse_mini_course/accounts/dto"
 	"hse_mini_course/accounts/models"
 	"math/rand/v2"
 	"sync"
-  "fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -46,8 +46,8 @@ func (h *Handler) validateName(ctx *fiber.Ctx, name string) (error, bool) {
 	for _, ch := range name {
 		if !(('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z')) {
 			return ctx.Status(fiber.StatusForbidden).SendString(
-        fmt.Sprintf("name \"%s\" must consist of only latin letters", name),
-      ), false
+				fmt.Sprintf("name \"%s\" must consist of only latin letters", name),
+			), false
 		}
 	}
 	return nil, true
@@ -70,8 +70,8 @@ func (h *Handler) CreateAccount(ctx *fiber.Ctx) error {
 	if taken {
 		h.accountsGuard.Unlock()
 		return ctx.Status(fiber.StatusForbidden).SendString(
-      fmt.Sprintf("name \"%s\" already taken", name),
-    )
+			fmt.Sprintf("name \"%s\" already taken", name),
+		)
 	}
 
 	new_acc := models.Account{
@@ -108,8 +108,8 @@ func (h *Handler) GetUser(ctx *fiber.Ctx) error {
 	if !found {
 		h.accountsGuard.RUnlock()
 		return ctx.Status(fiber.StatusNotFound).SendString(
-      fmt.Sprintf("name \"%s\" not found", name),
-    )
+			fmt.Sprintf("name \"%s\" not found", name),
+		)
 	}
 	h.accountsGuard.RUnlock()
 	return ctx.Status(fiber.StatusOK).JSON(dto.AccountToResponse(*account))
@@ -129,8 +129,8 @@ func (h *Handler) NewTransaction(ctx *fiber.Ctx) error {
 	if !found {
 		h.accountsGuard.Unlock()
 		return ctx.Status(fiber.StatusNotFound).SendString(
-      fmt.Sprintf("name \"%s\" not found", name),
-    )
+			fmt.Sprintf("name \"%s\" not found", name),
+		)
 	}
 	acc.Balance += delta
 	h.accountsGuard.Unlock()
@@ -152,19 +152,19 @@ func (h *Handler) ChangeName(ctx *fiber.Ctx) error {
 
 	h.accountsGuard.Lock()
 	acc, found := h.accounts[name]
-  if !found {
+	if !found {
 		h.accountsGuard.Unlock()
 		return ctx.Status(fiber.StatusNotFound).SendString(
-      fmt.Sprintf("name \"%s\" not found", name),
-    )
-  }
-  _, found = h.accounts[newName]
-  if found {
+			fmt.Sprintf("name \"%s\" not found", name),
+		)
+	}
+	_, found = h.accounts[newName]
+	if found {
 		h.accountsGuard.Unlock()
 		return ctx.Status(fiber.StatusForbidden).SendString(
-      fmt.Sprintf("name \"%s\" already taken", newName),
-    )
-  }
+			fmt.Sprintf("name \"%s\" already taken", newName),
+		)
+	}
 
 	delete(h.accounts, name)
 	acc.Name = newName
@@ -177,13 +177,13 @@ func (h *Handler) ChangeName(ctx *fiber.Ctx) error {
 func (h *Handler) DeleteAccount(ctx *fiber.Ctx) error {
 	name := ctx.Params("name")
 
-  h.accountsGuard.Lock()
+	h.accountsGuard.Lock()
 	account, found := h.accounts[name]
 	if !found {
-    h.accountsGuard.Unlock()
+		h.accountsGuard.Unlock()
 		return ctx.Status(fiber.StatusNotFound).SendString(
-      fmt.Sprintf("name \"%s\" not found", name),
-    )
+			fmt.Sprintf("name \"%s\" not found", name),
+		)
 	}
 	id := account.Id
 

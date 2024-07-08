@@ -9,5 +9,5 @@ type ChangeNameRequest struct {
 }
 
 type NewTransactionRequest struct {
-	Delta int    `json:"delta"`
+	Delta int `json:"delta"`
 }

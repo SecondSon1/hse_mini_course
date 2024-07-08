@@ -45,6 +45,6 @@ func (cmd *Command) Execute() error {
 
 		return nil
 	default:
-    return fmt.Errorf("unknown command %s\n  available commands: create, get, transact, change, delete", cmd.Cmd)
+		return fmt.Errorf("unknown command %s\n  available commands: create, get, transact, change, delete", cmd.Cmd)
 	}
 }

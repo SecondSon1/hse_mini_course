@@ -9,23 +9,23 @@ import (
 )
 
 const (
-  PORT = ":6969"
+	PORT = ":6969"
 )
 
 func main() {
-  // Initialize a new Fiber app
-  app := fiber.New()
-  app.Use(logger.New())
+	// Initialize a new Fiber app
+	app := fiber.New()
+	app.Use(logger.New())
 
-  accountHandler := accounts.NewHandler()
+	accountHandler := accounts.NewHandler()
 
-  app.Post("/account/new", accountHandler.CreateAccount)
+	app.Post("/account/new", accountHandler.CreateAccount)
 
-  group := app.Group("/account/:name")
-  group.Get("/", accountHandler.GetUser)
-  group.Post("/", accountHandler.NewTransaction)
-  group.Patch("/", accountHandler.ChangeName)
-  group.Delete("/", accountHandler.DeleteAccount)
+	group := app.Group("/account/:name")
+	group.Get("/", accountHandler.GetUser)
+	group.Post("/", accountHandler.NewTransaction)
+	group.Patch("/", accountHandler.ChangeName)
+	group.Delete("/", accountHandler.DeleteAccount)
 
-  log.Fatal(app.Listen(PORT))
+	log.Fatal(app.Listen(PORT))
 }
