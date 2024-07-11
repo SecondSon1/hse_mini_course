@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	PORT        = 6969
+	PORT = 6969
 
 	IDS_FROM    = 100000
 	IDS_TO      = 999999

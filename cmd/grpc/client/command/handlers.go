@@ -15,9 +15,9 @@ func (cmd *Command) get(ctx context.Context, client proto.Hw3Client) error {
 	resp, err := client.GetAccount(ctx, &proto.GetAccountRequest{
 		Name: cmd.Name,
 	})
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
 	fmt.Println("response:")
 	printAccount(resp)
@@ -27,9 +27,9 @@ func (cmd *Command) get(ctx context.Context, client proto.Hw3Client) error {
 
 func (cmd *Command) create(ctx context.Context, client proto.Hw3Client) error {
 	resp, err := client.CreateAccount(ctx, &proto.CreateAccountRequest{
-    Name: cmd.Name,
-  })
-  if err != nil {
+		Name: cmd.Name,
+	})
+	if err != nil {
 		return err
 	}
 
@@ -40,13 +40,13 @@ func (cmd *Command) create(ctx context.Context, client proto.Hw3Client) error {
 }
 
 func (cmd *Command) newTransaction(ctx context.Context, client proto.Hw3Client) error {
-  resp, err := client.NewTransaction(ctx, &proto.NewTransactionRequest{
-    Name: cmd.Name,
-    Delta: cmd.Delta,
-  })
-  if err != nil {
-    return err
-  }
+	resp, err := client.NewTransaction(ctx, &proto.NewTransactionRequest{
+		Name:  cmd.Name,
+		Delta: cmd.Delta,
+	})
+	if err != nil {
+		return err
+	}
 
 	fmt.Println("success")
 	fmt.Println("new account status:")
@@ -56,13 +56,13 @@ func (cmd *Command) newTransaction(ctx context.Context, client proto.Hw3Client) 
 }
 
 func (cmd *Command) changeName(ctx context.Context, client proto.Hw3Client) error {
-  resp, err := client.ChangeName(ctx, &proto.ChangeNameRequest{
-    Name: cmd.Name,
-    NewName: cmd.NewName,
-  })
-  if err != nil {
-    return err
-  }
+	resp, err := client.ChangeName(ctx, &proto.ChangeNameRequest{
+		Name:    cmd.Name,
+		NewName: cmd.NewName,
+	})
+	if err != nil {
+		return err
+	}
 
 	fmt.Println("success")
 	fmt.Println("new account status:")
@@ -71,12 +71,12 @@ func (cmd *Command) changeName(ctx context.Context, client proto.Hw3Client) erro
 }
 
 func (cmd *Command) delete(ctx context.Context, client proto.Hw3Client) error {
-  _, err := client.DeleteAccount(ctx, &proto.DeleteAccountRequest{
-    Name: cmd.Name,
-  })
-  if err != nil {
-    return err
-  }
+	_, err := client.DeleteAccount(ctx, &proto.DeleteAccountRequest{
+		Name: cmd.Name,
+	})
+	if err != nil {
+		return err
+	}
 
 	fmt.Println("successfully deleted")
 	return nil

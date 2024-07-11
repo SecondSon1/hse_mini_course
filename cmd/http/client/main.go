@@ -16,10 +16,10 @@ func main() {
 
 	flag.Parse()
 
-  if *nameVal == "" {
-    fmt.Println("Name cannot be empty")
-    return
-  }
+	if *nameVal == "" {
+		fmt.Println("Name cannot be empty")
+		return
+	}
 
 	cmd := command.Command{
 		Port:    *portVal,

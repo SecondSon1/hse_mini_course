@@ -4,7 +4,7 @@ import "hse_mini_course/accounts/models"
 
 type GetAccountResponse struct {
 	Name    string `json:"name"`
-	Balance int32    `json:"balance"`
+	Balance int32  `json:"balance"`
 }
 
 func AccountToResponse(account models.Account) GetAccountResponse {

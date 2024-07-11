@@ -22,10 +22,10 @@ func main() {
 
 	flag.Parse()
 
-  if *nameVal == "" {
-    fmt.Println("Name cannot be empty")
-    return
-  }
+	if *nameVal == "" {
+		fmt.Println("Name cannot be empty")
+		return
+	}
 
 	cmd := command.Command{
 		Cmd:     *cmdVal,
@@ -34,16 +34,16 @@ func main() {
 		Delta:   int32(*deltaVal),
 	}
 
-  addr := fmt.Sprintf("%s:%d", *hostVal, *portVal)
-  conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
-  if err != nil {
-    fmt.Printf("ERR: could not create client: %v", err)
-  }
-  client := proto.NewHw3Client(conn)
-  ctx, cancel := context.WithTimeout(context.Background(), time.Second * 3)
-  defer cancel()
+	addr := fmt.Sprintf("%s:%d", *hostVal, *portVal)
+	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		fmt.Printf("ERR: could not create client: %v", err)
+	}
+	client := proto.NewHw3Client(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+	defer cancel()
 
 	if err := cmd.Execute(ctx, client); err != nil {
-    fmt.Printf("ERR: could not execute: %s\n", err)
+		fmt.Printf("ERR: could not execute: %s\n", err)
 	}
 }

@@ -17,7 +17,7 @@ const (
 )
 
 func generateId() uint32 {
-	return rand.Uint32N(IDS_TO - IDS_FROM + 1) + IDS_FROM
+	return rand.Uint32N(IDS_TO-IDS_FROM+1) + IDS_FROM
 }
 
 type Handler struct {
