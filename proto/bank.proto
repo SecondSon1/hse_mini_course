@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "hse_mini_course/proto";
+
+message Empty {}
+
+// === Requests ===
+message CreateAccountRequest {
+  string name = 1;
+}
+
+message GetAccountRequest {
+  string name = 1;
+}
+
+message ChangeNameRequest {
+  string name = 1;
+  string newName = 2;
+}
+
+message NewTransactionRequest {
+  string name = 1;
+  int32 delta = 2;
+}
+
+message DeleteAccountRequest {
+  string name = 1;
+}
+
+// === Responses ===
+message GetAccountResponse {
+  string name = 1;
+  int32 balance = 2;
+}
+
+service Hw3 {
+  rpc CreateAccount(CreateAccountRequest) returns (GetAccountResponse) {}
+  rpc GetAccount(GetAccountRequest) returns (GetAccountResponse) {}
+  rpc ChangeName(ChangeNameRequest) returns (GetAccountResponse) {}
+  rpc NewTransaction(NewTransactionRequest) returns (GetAccountResponse) {}
+  rpc DeleteAccount(DeleteAccountRequest) returns (Empty) {}
+}

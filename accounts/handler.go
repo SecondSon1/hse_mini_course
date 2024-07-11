@@ -16,13 +16,13 @@ const (
 	GUARD_LIMIT = 20
 )
 
-func generateId() int {
-	return rand.IntN(IDS_TO-IDS_FROM+1) + IDS_FROM
+func generateId() uint32 {
+	return rand.Uint32N(IDS_TO - IDS_FROM + 1) + IDS_FROM
 }
 
 type Handler struct {
 	accounts      map[string]*models.Account
-	ids           map[int]bool
+	ids           map[uint32]bool
 	accountsGuard *sync.RWMutex
 	idsGuard      *sync.RWMutex
 }
@@ -30,7 +30,7 @@ type Handler struct {
 func NewHandler() *Handler {
 	return &Handler{
 		accounts:      make(map[string]*models.Account),
-		ids:           make(map[int]bool),
+		ids:           make(map[uint32]bool),
 		accountsGuard: &sync.RWMutex{},
 		idsGuard:      &sync.RWMutex{},
 	}

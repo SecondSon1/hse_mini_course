@@ -1,7 +1,7 @@
 package models
 
 type Account struct {
-	Id      int
+	Id      uint32
 	Name    string
-	Balance int
+	Balance int32
 }

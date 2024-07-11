@@ -1,45 +1,47 @@
 package command
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+	"hse_mini_course/proto"
+)
 
 type Command struct {
-	Port    int
-	Host    string
 	Cmd     string
 	Name    string
 	NewName string
-	Delta   int
+	Delta   int32
 }
 
-func (cmd *Command) Execute() error {
+func (cmd *Command) Execute(ctx context.Context, client proto.Hw3Client) error {
 	switch cmd.Cmd {
 	case "create":
-		if err := cmd.create(); err != nil {
+		if err := cmd.create(ctx, client); err != nil {
 			return fmt.Errorf("create account failed: %w", err)
 		}
 
 		return nil
 	case "get":
-		if err := cmd.get(); err != nil {
+		if err := cmd.get(ctx, client); err != nil {
 			return fmt.Errorf("get account failed: %w", err)
 		}
 
 		return nil
 	case "transact":
-		if err := cmd.newTransaction(); err != nil {
+		if err := cmd.newTransaction(ctx, client); err != nil {
 			return fmt.Errorf("new transaction failed: %w", err)
 		}
 
 		return nil
 
 	case "change":
-		if err := cmd.changeName(); err != nil {
+		if err := cmd.changeName(ctx, client); err != nil {
 			return fmt.Errorf("change account failed: %w", err)
 		}
 
 		return nil
 	case "delete":
-		if err := cmd.delete(); err != nil {
+		if err := cmd.delete(ctx, client); err != nil {
 			return fmt.Errorf("delete account failed: %w", err)
 		}
 

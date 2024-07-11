@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"hse_mini_course/cmd/client/command"
+	"hse_mini_course/cmd/http/client/command"
 )
 
 func main() {
@@ -16,13 +16,18 @@ func main() {
 
 	flag.Parse()
 
+  if *nameVal == "" {
+    fmt.Println("Name cannot be empty")
+    return
+  }
+
 	cmd := command.Command{
 		Port:    *portVal,
 		Host:    *hostVal,
 		Cmd:     *cmdVal,
 		Name:    *nameVal,
 		NewName: *newNameVal,
-		Delta:   *deltaVal,
+		Delta:   int32(*deltaVal),
 	}
 
 	if err := cmd.Execute(); err != nil {
