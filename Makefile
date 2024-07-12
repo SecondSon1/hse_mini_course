@@ -18,9 +18,3 @@ http: http_server http_client
 grpc: grpc_server grpc_client
 
 grpc_db: grpc_db_server grpc_client
-
-docker_build:
-	docker build -t hse_mini_course .
-
-docker_run:
-	docker run -d -p 6969:6969 hse_mini_course

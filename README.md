@@ -2,5 +2,4 @@
 
 ----
 
-Run `make docker_build` to build docker image called `hse_mini_course`. Run `make docker_run` to run it.
-Default port is 6969.
+Run `docker-compose up` to deploy the app. Default port for grpc server is 6969.

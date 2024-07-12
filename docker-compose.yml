@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  grpc_db_server:
+    container_name: grpc_db_server
+
+    depends_on:
+      - grpc_db
+
+    ports:
+      - "6969:6969"
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    environment:
+      DB_PORT: 1337
+      DB_NAME: "grpc_db"
+      DB_USER: "grpc_server"
+      DB_PASSWORD: "abobus_destroyer"
+
+    restart: always
+
+  grpc_db:
+    image: postgres:16.3-alpine3.20
+    container_name: grpc_postgres_db
+
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
+    ports:
+      # because 5432 may be taken by local postgres
+      - "1337:5432"
+    environment:
+      POSTGRES_DB: "grpc_db"
+      POSTGRES_USER: "grpc_server"
+      POSTGRES_PASSWORD: "abobus_destroyer"
+
+    restart: always
+
+volumes:
+  db:
+    driver: local
