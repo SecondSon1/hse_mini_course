@@ -7,9 +7,20 @@ http_client:
 grpc_server:
 	go build -C ./cmd/grpc/server -o ../../../bin/grpc_server
 
+grpc_db_server:
+	go build -C ./cmd/grpc/db_server -o ../../../bin/grpc_db_server
+
 grpc_client:
 	go build -C ./cmd/grpc/client -o ../../../bin/grpc_client
 
 http: http_server http_client
 
 grpc: grpc_server grpc_client
+
+grpc_db: grpc_db_server grpc_client
+
+docker_build:
+	docker build -t hse_mini_course .
+
+docker_run:
+	docker run -d -p 6969:6969 hse_mini_course
