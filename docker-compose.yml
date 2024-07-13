@@ -14,7 +14,8 @@ services:
       dockerfile: Dockerfile
 
     environment:
-      DB_PORT: 1337
+      DB_HOST: "grpc_db"
+      DB_PORT: 5432
       DB_NAME: "grpc_db"
       DB_USER: "grpc_server"
       DB_PASSWORD: "abobus_destroyer"
@@ -24,6 +25,7 @@ services:
   grpc_db:
     image: postgres:16.3-alpine3.20
     container_name: grpc_postgres_db
+    hostname: grpc_db
 
     volumes:
       - db:/var/lib/postgresql/data
