@@ -37,19 +37,19 @@ func (s *server) CreateAccount(ctx context.Context, request *proto.CreateAccount
 		Name:    name,
 		Balance: pgtype.Int4{Int32: 0, Valid: true},
 	})
-  if err != nil {
-    problem := IdentifyErrorAfterTransaction(err)
-    switch problem {
-    case NoRows:
-      panic("NoRows is impossible in CreateAccount")
-    case Duplicates:
-      return nil, NameIsTaken(&name)
-    case DBError, NonDBError:
-      log.Printf("ERR: while creating account: %v\n", err)
-      return nil, status.Error(codes.Internal, "internal error")
-    }
-    panic("Switch/case was supposed to be exhaustive")
-  }
+	if err != nil {
+		problem := IdentifyErrorAfterTransaction(err)
+		switch problem {
+		case NoRows:
+			panic("NoRows is impossible in CreateAccount")
+		case Duplicates:
+			return nil, NameIsTaken(&name)
+		case DBError, NonDBError:
+			log.Printf("ERR: while creating account: %v\n", err)
+			return nil, status.Error(codes.Internal, "internal error")
+		}
+		panic("Switch/case was supposed to be exhaustive")
+	}
 
 	return accountModelToDto(&account), nil
 }
@@ -57,15 +57,15 @@ func (s *server) CreateAccount(ctx context.Context, request *proto.CreateAccount
 func (s *server) GetAccount(ctx context.Context, request *proto.GetAccountRequest) (*proto.GetAccountResponse, error) {
 	name := request.Name
 
-  account, err := s.queries.GetAccount(ctx, name)
-  if err != nil {
-    if err == pgx.ErrNoRows { // No error, name not found
-      return nil, NameNotFound(&name)
-    } else { // Actual db error
-      log.Printf("ERR: while getting account: %v\n", err)
-      return nil, status.Error(codes.Internal, "internal error")
-    }
-  }
+	account, err := s.queries.GetAccount(ctx, name)
+	if err != nil {
+		if err == pgx.ErrNoRows { // No error, name not found
+			return nil, NameNotFound(&name)
+		} else { // Actual db error
+			log.Printf("ERR: while getting account: %v\n", err)
+			return nil, status.Error(codes.Internal, "internal error")
+		}
+	}
 
 	return accountModelToDto(&account), nil
 }
@@ -74,18 +74,18 @@ func (s *server) NewTransaction(ctx context.Context, request *proto.NewTransacti
 	name := request.Name
 	delta := request.Delta
 
-  account, err := s.queries.UpdateBalance(ctx, sqlc.UpdateBalanceParams{
-    Name: name,
-    Balance: pgtype.Int4{ Int32: delta, Valid: true },
-  })
-  if err != nil {
-    if err == pgx.ErrNoRows { // No error, name not found
-      return nil, NameNotFound(&name)
-    } else { // Actual db error
-      log.Printf("ERR: while getting account: %v\n", err)
-      return nil, status.Error(codes.Internal, "internal error")
-    }
-  }
+	account, err := s.queries.UpdateBalance(ctx, sqlc.UpdateBalanceParams{
+		Name:    name,
+		Balance: pgtype.Int4{Int32: delta, Valid: true},
+	})
+	if err != nil {
+		if err == pgx.ErrNoRows { // No error, name not found
+			return nil, NameNotFound(&name)
+		} else { // Actual db error
+			log.Printf("ERR: while getting account: %v\n", err)
+			return nil, status.Error(codes.Internal, "internal error")
+		}
+	}
 
 	return accountModelToDto(&account), nil
 }
@@ -101,23 +101,23 @@ func (s *server) ChangeName(ctx context.Context, request *proto.ChangeNameReques
 		)
 	}
 
-  account, err := s.queries.UpdateName(ctx, sqlc.UpdateNameParams{
-    Name: name,
-    Name_2: newName,
-  })
-  if err != nil {
-    problem := IdentifyErrorAfterTransaction(err)
-    switch problem {
-    case NoRows:
-      return nil, NameNotFound(&name)
-    case Duplicates:
-      return nil, NameIsTaken(&newName)
-    case DBError, NonDBError:
-      log.Printf("ERR: while creating account: %v\n", err)
-      return nil, status.Error(codes.Internal, "internal error")
-    }
-    panic("Switch/case was supposed to be exhaustive")
-  }
+	account, err := s.queries.UpdateName(ctx, sqlc.UpdateNameParams{
+		Name:   name,
+		Name_2: newName,
+	})
+	if err != nil {
+		problem := IdentifyErrorAfterTransaction(err)
+		switch problem {
+		case NoRows:
+			return nil, NameNotFound(&name)
+		case Duplicates:
+			return nil, NameIsTaken(&newName)
+		case DBError, NonDBError:
+			log.Printf("ERR: while creating account: %v\n", err)
+			return nil, status.Error(codes.Internal, "internal error")
+		}
+		panic("Switch/case was supposed to be exhaustive")
+	}
 
 	return accountModelToDto(&account), nil
 }
@@ -125,15 +125,15 @@ func (s *server) ChangeName(ctx context.Context, request *proto.ChangeNameReques
 func (s *server) DeleteAccount(ctx context.Context, request *proto.DeleteAccountRequest) (*proto.Empty, error) {
 	name := request.Name
 
-  err := s.queries.DeleteAccount(ctx, name)
-  if err != nil {
-    if err == pgx.ErrNoRows { // No error, name not found
-      return nil, NameNotFound(&name)
-    } else { // Actual db error
-      log.Printf("ERR: while getting account: %v\n", err)
-      return nil, status.Error(codes.Internal, "internal error")
-    }
-  }
+	err := s.queries.DeleteAccount(ctx, name)
+	if err != nil {
+		if err == pgx.ErrNoRows { // No error, name not found
+			return nil, NameNotFound(&name)
+		} else { // Actual db error
+			log.Printf("ERR: while getting account: %v\n", err)
+			return nil, status.Error(codes.Internal, "internal error")
+		}
+	}
 
 	return &proto.Empty{}, nil
 }
