@@ -16,6 +16,6 @@ UPDATE accounts SET
   name = $2
 WHERE name=$1 RETURNING *;
 
--- name: DeleteAccount :exec
+-- name: DeleteAccount :one
 DELETE FROM accounts
-WHERE name=$1;
+WHERE name=$1 RETURNING id;

@@ -125,7 +125,7 @@ func (s *server) ChangeName(ctx context.Context, request *proto.ChangeNameReques
 func (s *server) DeleteAccount(ctx context.Context, request *proto.DeleteAccountRequest) (*proto.Empty, error) {
 	name := request.Name
 
-	err := s.queries.DeleteAccount(ctx, name)
+	_, err := s.queries.DeleteAccount(ctx, name)
 	if err != nil {
 		if err == pgx.ErrNoRows { // No error, name not found
 			return nil, NameNotFound(&name)
